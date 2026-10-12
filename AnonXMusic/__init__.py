@@ -7,6 +7,10 @@ from AnonXMusic.core.userbot import Userbot
 from AnonXMusic.misc import dbb, heroku
 from .logging import LOGGER
 
+dirr()
+git()
+dbb()
+heroku()
 
 async def health(request):
     return web.Response(text="AnonXMusic is running", status=200)
@@ -27,11 +31,6 @@ async def start_health_server():
     LOGGER("AnonXMusic").info(f"Health server running on port {port}")
     return runner
 
-
-dirr()
-git()
-dbb()
-heroku()
 
 app = Anony()
 userbot = Userbot()
