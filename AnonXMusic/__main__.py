@@ -11,6 +11,24 @@ from AnonXMusic.plugins import ALL_MODULES
 from AnonXMusic.utils.database import get_banned_users, get_gbanned
 from config import BANNED_USERS
 
+async def health(request):
+    return web.Response(text="AnonXMusic is running", status=200)
+
+
+async def start_health_server():
+    app = web.Application()
+    app.router.add_get("/", health)
+    app.router.add_get("/health", health)
+
+    runner = web.AppRunner(app)
+    await runner.setup()
+
+    port = int(__import__("os").environ.get("PORT", 1000))
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+
+    LOGGER("AnonXMusic").info(f"Health server running on port {port}")
+    return runner
 
 async def init():
     if (
@@ -37,6 +55,7 @@ async def init():
         importlib.import_module("AnonXMusic.plugins" + all_module)
     LOGGER("AnonXMusic.plugins").info("Successfully Imported Modules...")
     await userbot.start()
+    health_runner = await start_health_server()
     await Anony.start()
     try:
         await Anony.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
