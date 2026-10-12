@@ -29,7 +29,7 @@ async def start_health_server():
 
     LOGGER("AnonXMusic").info(f"Health server running on port {port}")
     return runner
-
+health_runner = await start_health_server()
 async def init():
     if (
         not config.STRING1
